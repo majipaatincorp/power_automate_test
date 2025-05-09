@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Power Automate Test</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: center;">
+      <img src="ms.png" alt="Power Automate Logo" width="80" height="80">
+    </div>
+    <h2>Power Automate Test</h2>
+    <form id="userForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age" required />
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="" disabled selected>Select gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('userForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = {
+        username: this.username.value,
+        email: this.email.value,
+        password: this.password.value,
+        age: parseInt(this.age.value),
+        gender: this.gender.value
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+        alert(result.message || 'Form submitted successfully!');
+        this.reset();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Submission failed. Check the console for details.');
+      }
+    });
+  </script>
+</body>
+</html>
+
